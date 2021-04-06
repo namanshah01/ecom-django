@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import home_view, cart_view, checkout_view
+from .views import home, cart, checkout
 
 urlpatterns = [
-	path('home/', home_view, name='home'),
-	path('cart/', cart_view, name='cart'),
-	path('checkout/', checkout_view, name='checkout'),
+	path('home/', home, name='home'),
+	path('cart/', cart, name='cart'),
+	path('checkout/', checkout, name='checkout'),
 ]
