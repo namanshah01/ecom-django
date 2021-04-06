@@ -4,12 +4,6 @@ from PIL import Image
 
 # Create your models here.
 
-class Account(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-	def __str__(self):
-		return self.user.username
-
 LABEL_CHOICES = (
     ('n', 'None'),
     ('primary', 'Bestseller'),
@@ -19,6 +13,12 @@ LABEL_CHOICES = (
 def upload_location(instance, filename):
 	file_path = f'prod/{instance.name}-{filename}'
 	return file_path
+
+class Account(models.Model):
+	user			= models.OneToOneField(User, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.user.username
 
 class Product(models.Model):
 	name			= models.CharField(max_length=50, null=False, blank=False, unique=True)
@@ -51,6 +51,18 @@ class Order(models.Model):
 	
 	def __str__(self):
 		return str(self.id)
+	
+	@property
+	def get_cart_total(self):
+		orderitems	= self.orderitem_set.all()
+		total		= sum([orderitem.get_total for orderitem in orderitems])
+		return total
+	
+	@property
+	def get_cart_quantity(self):
+		orderitems	= self.orderitem_set.all()
+		total		= sum([orderitem.quantity for orderitem in orderitems])
+		return total
 
 class OrderItem(models.Model):
 	product			= models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
@@ -60,6 +72,10 @@ class OrderItem(models.Model):
 
 	def __str__(self):
 		return str(self.id)
+	
+	@property
+	def get_total(self):
+		return self.product.price*self.quantity
 
 class Shipping(models.Model):
 	account			= models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
