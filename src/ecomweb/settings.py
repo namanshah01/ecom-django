@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+# from django.conf import settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,6 +25,8 @@ SECRET_KEY = '^+_w8hab$@05+0xigjtq*bbb$)x^ck+)o@2he^-_4%a^ey1#0!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# settings.configure(DEBUG=True)
 
 ALLOWED_HOSTS = []
 
