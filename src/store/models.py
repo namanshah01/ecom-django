@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from PIL import Image
 
 # Create your models here.
 
@@ -15,15 +16,15 @@ LABEL_CHOICES = (
     ('danger', 'New'),
 )
 
-# def upload_location(instance, filename):
-# 	file_path = f'prod/{instance.name}-{filename}'
-# 	return file_path
+def upload_location(instance, filename):
+	file_path = f'prod/{instance.name}-{filename}'
+	return file_path
 
 class Product(models.Model):
 	name			= models.CharField(max_length=50, null=False, blank=False, unique=True)
 	price			= models.FloatField()
 	label			= models.CharField(choices=LABEL_CHOICES, max_length=7, default=None)
-	# image			= models.ImageField(upload_to=upload_location, null=True)
+	image			= models.ImageField(upload_to=upload_location, null=True)
 
 	def __str__(self):
 		return self.name
@@ -33,6 +34,14 @@ class Product(models.Model):
 			return 'bestseller'
 		else:
 			return 'new'
+	
+	def save(self, *args, **kwargs):
+		super().save(*args, **kwargs)
+		img = Image.open(self.image.path)
+		if img.width>525 or img.height>300:
+			output_size = (525, 300)
+			img.thumbnail(output_size)
+			img.save(self.image.path)
 
 class Order(models.Model):
 	account			= models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
