@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 	<div class="row">
-		{% for product in products %}
+		{% for product in post_list %}
 		<div class="col-lg-4">
 			<img class="thumbnail" src="{{product.image.url}}">
 			<div class="box-element product">
@@ -21,5 +21,29 @@
 		</div>
 		{% endfor %}
 	</div>
+
+		<div class="page_btn mt-5" style="margin: auto;">
+			<div style="width: 22%;
+			height: auto;
+			margin: 0 auto;
+			position: relative;">
+				{% if post_list.has_previous %}
+					<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+				{% endif %}
+
+				{% for num in post_list.paginator.page_range %}
+					{% if post_list.number == num %}
+						<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+					{% elif num > post_list.number|add:'-3' and num < post_list.number|add:'3' %}
+						<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+					{% endif %}
+				{% endfor %}
+
+				{% if post_list.has_next %}
+					<a class="btn btn-outline-info mb-4" href="?page={{ post_list.paginator.num_pages }}">Last</a>
+				{% endif %}
+			</div>
+		</div>
+	<!-- </div> -->
 
 {% endblock content %}

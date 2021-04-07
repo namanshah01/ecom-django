@@ -3,6 +3,7 @@ from .models import *
 from django.http import JsonResponse
 import json
 import datetime
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
 
 def home(request):
@@ -15,7 +16,16 @@ def home(request):
 		order	= {'get_cart_quantity': 0, 'get_cart_total': 0}
 	#
 	products	= Product.objects.all()
-	context		= {'products': products, 'order': order}
+	object_list = products
+	paginator = Paginator(object_list, 6)
+	page = request.GET.get('page')
+	try:
+		post_list = paginator.page(page)
+	except PageNotAnInteger:
+		post_list = paginator.page(1)
+	except EmptyPage:
+		post_list = paginator.page(paginator.num_pages)
+	context = {'products': products, 'order': order, 'page': page, 'post_list': post_list, 'page_obj': paginator}
 	return render(request, 'store/home.html', context)
 
 def cart(request):
