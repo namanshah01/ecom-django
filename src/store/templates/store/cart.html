@@ -14,7 +14,9 @@
 						<th><h5>Items:<strong> {{order.get_cart_quantity}}</strong></h5></th>
 						<th><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></th>
 						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+							<a href="{% url 'checkout' %}">
+							<button id="checkoutbtn" style="float:right; margin:5px;" class="btn btn-success">Checkout</button>
+							</a>
 						</th>
 					</tr>
 				</table>
@@ -31,6 +33,7 @@
 					<div style="flex:1"><strong>Total</strong></div>
 				</div>
 				
+				<p id="empty-cart" class="hidden" style="text-align: center;">Cart Empty!</p>
 				{% for item in items %}
 				<div class="cart-row">
 					<div style="flex:2"><img class="row-image" src="{{item.product.image.url}}"></div>
@@ -39,8 +42,8 @@
 					<div style="flex:1">
 						<p class="quantity">{{item.quantity}}</p>
 						<div class="quantity">
-							<img class="chg-quantity" src="{% static 'images/arrow-up.png' %}">
-							<img class="chg-quantity" src="{% static 'images/arrow-down.png' %}">
+							<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static 'images/arrow-up.png' %}">
+							<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static 'images/arrow-down.png' %}">
 						</div>
 					</div>
 					<div style="flex:1"><p>${{item.get_total}}</p></div>
@@ -49,4 +52,12 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		var num = '{{order.get_cart_total}}';
+		if (num=='0') {
+			document.getElementById('checkoutbtn').disabled = true;
+			document.getElementById('empty-cart').classList.remove('hidden');
+		}
+	</script>
 {% endblock content %}

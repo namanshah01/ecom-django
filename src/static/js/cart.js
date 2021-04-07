@@ -11,6 +11,7 @@ for(i=0; i < updateBtns.length; i++) {
 			console.log('Not authenticated');
 		} else {
 			updateUserOrder(productId, action);
+			location.reload();
 		}
 	});
 }
@@ -31,6 +32,7 @@ function updateUserOrder(productId, action) {
 		return response.json();
 	})
 	.then((data) => {
+		location.reload();
 		console.log('data:', data);
 	});
 }

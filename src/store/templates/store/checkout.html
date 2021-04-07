@@ -19,19 +19,16 @@
 						<p>Shipping Information:</p>
 						<hr>
 						<div class="form-field">
-							<input class="form-control" type="text" name="address" placeholder="Address..">
+							<input class="form-control" type="text" name="address" placeholder="Address...">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="city" placeholder="City..">
+							<input class="form-control" type="text" name="city" placeholder="City...">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="state" placeholder="State..">
+							<input class="form-control" type="text" name="state" placeholder="State...">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
+							<input class="form-control" type="text" name="zipcode" placeholder="Zip code...">
 						</div>
 					</div>
 
@@ -41,8 +38,9 @@
 			</div>
 
 			<br>
-			<div class="box-element hidden" id="payment-info">
+			<div class="box-element hidden" id="payment-info" style="overflow: auto;">
 				<small>Paypal Options</small>
+				<button id="make-payment" style="float: right;" class="btn btn-success">Make Payment</button>
 			</div>
 			
 		</div>
@@ -53,6 +51,7 @@
 				<hr>
 				<h3>Order Summary</h3>
 				<hr>
+				<p id="empty-cart" class="hidden" style="text-align: center;">Cart Empty!</p>
 				{% for item in items %}
 				<div class="cart-row">
 					<div style="flex:2"><img class="row-image" src="{{item.product.image.url}}"></div>
@@ -61,9 +60,78 @@
 					<div style="flex:1"><p>x{{item.quantity}}</p></div>
 				</div>
 				{% endfor %}
+				<hr>
 				<h5>Items: {{order.get_cart_quantity}}</h5>
 				<h5>Total: ${{order.get_cart_total|floatformat:2}}</h5>
 			</div>
 		</div>
 	</div>
+
+	<script>
+		var num = '{{order.get_cart_total}}'
+		if (num=='0') {
+			console.log('yes');
+			document.getElementById('form-button').disabled = true;
+			document.getElementById('empty-cart').classList.remove('hidden');
+		}
+
+		if (user != 'AnonymousUser') {
+			document.getElementById('user-info').innerHTML='';
+		}
+
+		var form = document.getElementById('form');
+
+		form.addEventListener('submit', function(e){
+			e.preventDefault();
+			console.log('details aquired...');
+			document.getElementById('form-button').classList.add('hidden');
+			document.getElementById('payment-info').classList.remove('hidden');
+		});
+
+		document.getElementById('make-payment').addEventListener('click', function(e){
+			submitFormData();
+		});
+
+		function submitFormData() {
+			console.log('data submitted...');
+			userFormData = {
+				'name': null,
+				'email': null,
+				'total': total,
+			}
+	
+			var total = '{{order.get_cart_total}}';
+			
+			// if (user == 'AnonymousUser') {
+			// 	userFormData.name = form.name.value
+			// 	userFormData.email = form.email.value
+			// 	userFormData.total = total
+			// }
+	
+			var shippingInfo = {
+				'address': form.address.value,
+				'city': form.city.value,
+				'state': form.state.value,
+				'zipcode': form.zipcode.value,
+			}
+
+			var url = '/process_order/';
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrftoken,
+				},
+				body:JSON.stringify({'form':userFormData,'shipping':shippingInfo})
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log('Success:', data);
+				alert('Transaction completed');  
+				window.location.href = "{% url 'home' %}";
+			});
+		}
+
+	</script>
+
 {% endblock content %}
