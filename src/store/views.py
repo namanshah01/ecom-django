@@ -22,7 +22,9 @@ def home(request):
 	query = ''
 	# if request.GET:
 	# 	query = request.GET['q']
-	# products = get_queryset(query)
+	# 	products = get_queryset(query)
+	# else:
+	# 	products	= Product.objects.all().order_by('id')
 
 	# pagination
 	products	= Product.objects.all().order_by('id')
