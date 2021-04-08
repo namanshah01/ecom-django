@@ -1,6 +1,5 @@
 {% extends 'store/home.html' %}
 {% load crispy_forms_tags %}
-
 {% block content %}
 
 <style type="text/css">
@@ -9,7 +8,7 @@
 	  max-width: 330px;
 	  padding: 15px;
 	  margin: auto;
-	  }
+	}
   
 	.form-signin .form-control {
 	  position: relative;
@@ -22,49 +21,61 @@
 	  z-index: 2;
 	}
 	.form-signin input[type="email"] {
-	  margin-bottom: -1px;
+	  margin-bottom: 10px;
 	  border-bottom-right-radius: 0;
 	  border-bottom-left-radius: 0;
 	}
-	.form-signin input[type="password"] {
+	.form-signin input[type="username"] {
 	  margin-bottom: 10px;
 	  border-top-left-radius: 0;
 	  border-top-right-radius: 0;
 	}
-	.h3  {
+	.h3{
 	  text-align: center;
+	}
+  
+	.blog-posts{
+	  max-width: 500px;
+	  width: 100%;
+	  margin: auto;
 	}
   </style>
   
   
   <form class="form-signin" method="post">{% csrf_token %}
-	<h1 class="h3 mb-3 font-weight-normal">Login</h1>
   
-	<input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+	<h1 class="h3 mb-3 font-weight-normal">Account</h1>
+  
+	<input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus value={{account_form.initial.email}}>
 	
-	<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+	<input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required
+	value="{{account_form.initial.username}}">
   
-	{% for field in login_form %}
+	{% for field in account_form %}
 		<p>
 		  {% for error in field.errors %}
 			<p style="color: red">{{ error }}</p>
 		  {% endfor %}
 		</p>
 	{% endfor %}
-	{% if login_form.non_field_errors %}
+	{% if account_form.non_field_errors %}
 	  <div style="color: red">
-		<p>{{login_form.non_field_errors}}</p>
+		<p>{{account_form.non_field_errors}}</p>
 	  </div>
 		
 	{% endif %}
   
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+	{% if success_message %}
+	  <p style="color:green; text-align: center;">{{success_message}}</p>
+	{% endif  %}
+  
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Save changes</button>
   
   </form>
   
   <div class="d-flex flex-column">
-	<!-- <a class="m-auto" href="{ url 'password_reset' }">Reset password</a> -->
+	<a class="m-auto" href="#">Change password</a>
   </div>
-
-{% endblock content %}
-
+  
+  
+{% endblock content %}  

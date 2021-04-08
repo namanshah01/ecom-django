@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
+# from .settings import AUTH_USER_MODEL
+from ecomweb.settings import AUTH_USER_MODEL
 
 # Create your models here.
 
@@ -44,7 +46,7 @@ class Product(models.Model):
 			img.save(self.image.path)
 
 class Order(models.Model):
-	account			= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+	account			= models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 	date_ordered	= models.DateTimeField(auto_now_add=True)
 	complete		= models.BooleanField(default=False)
 	transaction_id	= models.CharField(max_length=100)
@@ -78,7 +80,7 @@ class OrderItem(models.Model):
 		return self.product.price*self.quantity
 
 class Shipping(models.Model):
-	account			= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+	account			= models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 	order			= models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
 	address			= models.CharField(max_length=200, null=False, blank=False)
 	city			= models.CharField(max_length=25, null=False, blank=False)
