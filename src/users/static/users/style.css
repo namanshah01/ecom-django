@@ -1,0 +1,63 @@
+/* -------------------- login page -------------------- */
+
+.skin-light .login-form,
+.skin-light .logout-form {
+  max-width: 30rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.skin-light .logout-form {
+  display: none;
+}
+
+.login-block{
+	/* background-color: palegreen; */
+	margin: auto;
+	width: 40%;
+	align-items: center;
+	text-align: center;
+	padding: 2rem 1rem 1rem 1rem;
+	border: 2px solid rgb(40, 40, 40);
+	border-radius: 1rem;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.login-block legend{
+	padding: 0;
+	margin: 0;
+}
+
+.login-block hr{
+	margin-top: 0;
+}
+
+.inner-align-1{
+	float: left;
+}
+
+.inner-align-2{
+	float: right;
+}
+
+/* -------------------- home page -------------------- */
+.reduce-width{
+	width: 50%;
+	margin: auto;
+}
+
+@media (max-width: 768px) {
+	.login-block{
+		width: 90%;
+	}
+	.reduce-width{
+		width: 90%;
+	}
+	table{
+		width: 100%;
+	}
+}

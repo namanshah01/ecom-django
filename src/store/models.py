@@ -14,11 +14,11 @@ def upload_location(instance, filename):
 	file_path = f'prod/{instance.name}-{filename}'
 	return file_path
 
-class Account(models.Model):
-	user			= models.OneToOneField(User, on_delete=models.CASCADE)
+# class Account(models.Model):
+# 	user			= models.OneToOneField(User, on_delete=models.CASCADE)
 
-	def __str__(self):
-		return self.user.username
+# 	def __str__(self):
+# 		return self.user.username
 
 class Product(models.Model):
 	name			= models.CharField(max_length=50, null=False, blank=False, unique=True)
@@ -44,7 +44,7 @@ class Product(models.Model):
 			img.save(self.image.path)
 
 class Order(models.Model):
-	account			= models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+	account			= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	date_ordered	= models.DateTimeField(auto_now_add=True)
 	complete		= models.BooleanField(default=False)
 	transaction_id	= models.CharField(max_length=100)
@@ -78,7 +78,7 @@ class OrderItem(models.Model):
 		return self.product.price*self.quantity
 
 class Shipping(models.Model):
-	account			= models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+	account			= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	order			= models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
 	address			= models.CharField(max_length=200, null=False, blank=False)
 	city			= models.CharField(max_length=25, null=False, blank=False)

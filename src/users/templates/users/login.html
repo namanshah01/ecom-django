@@ -1,0 +1,30 @@
+{% extends 'task/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="login-block">
+	<legend>Sign In to <strong>Todo List</strong></legend>
+	<hr>
+	<form method="POST" action="">
+		{% csrf_token %}
+		<div class="form-group">
+			<input type="text" class="form-control" name="username" placeholder="Username">
+		</div>
+		<div class="form-group">
+			<input type="password" class="form-control" name="password" placeholder="Password">
+		</div>
+	  <div class="text-center pb-2">
+			<div class="inner-align-1">
+			<button type="submit" class="btn btn-primary">Sign in</button>
+			</div>
+			<div class="inner-align-2">
+			<a href="{% url 'password_reset' %}">Forgot Password?</a>
+			</div>
+			<div style="clear: both;"></div>
+	  </div>
+		<p>Do not have a account? Register <a href="{% url 'register' %}">here</a>!</p>
+	</form>
+</div>
+
+{% endblock content %}

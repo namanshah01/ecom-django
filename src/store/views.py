@@ -4,33 +4,42 @@ from django.http import JsonResponse
 import json
 import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 # Create your views here.
 
 def home(request):
-	# consider removing below block
+	# cart number
 	if request.user.is_authenticated:
-		account			= request.user.account
+		account			= request.user
 		order, created	= Order.objects.get_or_create(account=account, complete=False)
 	else:
 		items	= 0
 		order	= {'get_cart_quantity': 0, 'get_cart_total': 0}
-	#
-	products	= Product.objects.all()
+	
+	# search
+	query = ''
+	# if request.GET:
+	# 	query = request.GET['q']
+	# products = get_queryset(query)
+
+	# pagination
+	products	= Product.objects.all().order_by('id')
 	object_list = products
 	paginator = Paginator(object_list, 6)
 	page = request.GET.get('page')
 	try:
-		post_list = paginator.page(page)
+		prod_list = paginator.page(page)
 	except PageNotAnInteger:
-		post_list = paginator.page(1)
+		prod_list = paginator.page(1)
 	except EmptyPage:
-		post_list = paginator.page(paginator.num_pages)
-	context = {'products': products, 'order': order, 'page': page, 'post_list': post_list, 'page_obj': paginator}
+		prod_list = paginator.page(paginator.num_pages)
+	
+	context = {'products': products, 'order': order, 'page': page, 'prod_list': prod_list, 'page_obj': paginator, 'query': query}
 	return render(request, 'store/home.html', context)
 
 def cart(request):
 	if request.user.is_authenticated:
-		account			= request.user.account
+		account			= request.user
 		order, created	= Order.objects.get_or_create(account=account, complete=False)
 		items			= order.orderitem_set.all()
 	else:
@@ -41,7 +50,7 @@ def cart(request):
 
 def checkout(request):
 	if request.user.is_authenticated:
-		account			= request.user.account
+		account			= request.user
 		order, created	= Order.objects.get_or_create(account=account, complete=False)
 		items			= order.orderitem_set.all()
 	else:
@@ -56,7 +65,7 @@ def updateItem(request):
 	action		= data['action']
 	print(f'productId: {productId}\naction: {action}')
 
-	account				= request.user.account
+	account				= request.user
 	product				= Product.objects.get(id=productId)
 	order, created		= Order.objects.get_or_create(account=account)
 	orderItem, created	= OrderItem.objects.get_or_create(order=order, product=product)
@@ -78,7 +87,7 @@ def processOrder(request):
 	data = json.loads(request.body)
 
 	if request.user.is_authenticated:
-		account = request.user.account
+		account = request.user
 		order, created = Order.objects.get_or_create(account=account, complete=False)
 		total = order.get_cart_total
 		order.transaction_id = transaction_id
@@ -96,3 +105,14 @@ def processOrder(request):
 	else:
 		print('User is not logged in')
 	return JsonResponse('Payment done', safe=False)
+
+def get_queryset(query=None):
+	queryset = []
+	if (query=='' or query==None):
+		products = Product.objects.all()
+	else:
+		queries = query.split(" ")
+		for q in queries:
+			products = Product.objects.filter(Q(name__icontains=q)).distinct()
+			# posts = Product.objects.filter(Q(name__icontains=q) | Q(label__icontains=q)).distinct()
+	return products

@@ -1,0 +1,16 @@
+{% extends 'store/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<!-- <div class="login-block" style="width: 40%; margin: auto;"> -->
+<div class="login-block">
+<legend>Register to <strong>Todo List</strong></legend>
+<form method="POST" action="">
+	{% csrf_token %}
+	{{ form|crispy }}
+	<input type="submit" class="btn btn-primary" value="Sign Up">
+</form>
+</div>
+{% endblock content %}
+
