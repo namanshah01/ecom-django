@@ -60,7 +60,7 @@ def login_view(request):
 	# print(form)
 	return render(request, "users/login.html", context)
 
-
+@login_required(login_url='/login/')
 def account_view(request):
 
 	if not request.user.is_authenticated:

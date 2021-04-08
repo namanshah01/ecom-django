@@ -5,8 +5,10 @@ import json
 import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required(login_url='/login/')
 def home(request):
 	# cart number
 	if request.user.is_authenticated:
@@ -37,6 +39,7 @@ def home(request):
 	context = {'products': products, 'order': order, 'page': page, 'prod_list': prod_list, 'page_obj': paginator, 'query': query}
 	return render(request, 'store/home.html', context)
 
+@login_required(login_url='/login/')
 def cart(request):
 	if request.user.is_authenticated:
 		account			= request.user
@@ -48,6 +51,7 @@ def cart(request):
 	context	= {'items': items, 'order': order}
 	return render(request, 'store/cart.html', context)
 
+@login_required(login_url='/login/')
 def checkout(request):
 	if request.user.is_authenticated:
 		account			= request.user
@@ -59,6 +63,7 @@ def checkout(request):
 	context	= {'items': items, 'order': order}
 	return render(request, 'store/checkout.html', context)
 
+@login_required(login_url='/login/')
 def updateItem(request):
 	data		= json.loads(request.body)
 	productId	= data['productId']
@@ -82,6 +87,7 @@ def updateItem(request):
 	
 	return JsonResponse('Item added', safe=False)
 
+@login_required(login_url='/login/')
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
 	data = json.loads(request.body)

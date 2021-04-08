@@ -51,10 +51,3 @@ class AccountUpdateForm(forms.ModelForm):
 		except Account.DoesNotExist:
 			return username
 		raise forms.ValidationError('Username "%s" is already in use.' % username)
-
-# class UserUpdateForm(forms.ModelForm):
-# 	email = forms.EmailField()
-
-# 	class Meta:
-# 		model = AUTH_USER_MODEL
-# 		fields = ['username', 'email']

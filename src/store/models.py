@@ -16,12 +16,6 @@ def upload_location(instance, filename):
 	file_path = f'prod/{instance.name}-{filename}'
 	return file_path
 
-# class Account(models.Model):
-# 	user			= models.OneToOneField(User, on_delete=models.CASCADE)
-
-# 	def __str__(self):
-# 		return self.user.username
-
 class Product(models.Model):
 	name			= models.CharField(max_length=50, null=False, blank=False, unique=True)
 	price			= models.FloatField()
