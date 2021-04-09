@@ -50,10 +50,8 @@ class Account(AbstractBaseUser):
 	def __str__(self):
 		return self.email
 
-	# For checking permissions. to keep it simple all admin have ALL permissons
 	def has_perm(self, perm, obj=None):
 		return self.is_admin
 
-	# Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
 	def has_module_perms(self, app_label):
 		return True

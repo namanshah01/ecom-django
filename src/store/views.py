@@ -11,13 +11,9 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='/login/')
 def home(request):
 	# cart number
-	if request.user.is_authenticated:
-		account			= request.user
-		order, created	= Order.objects.get_or_create(account=account, complete=False)
-	else:
-		items	= 0
-		order	= {'get_cart_quantity': 0, 'get_cart_total': 0}
-	
+	account			= request.user
+	order, created	= Order.objects.get_or_create(account=account, complete=False)
+
 	# search
 	query = ''
 	# if request.GET:
@@ -43,25 +39,17 @@ def home(request):
 
 @login_required(login_url='/login/')
 def cart(request):
-	if request.user.is_authenticated:
-		account			= request.user
-		order, created	= Order.objects.get_or_create(account=account, complete=False)
-		items			= order.orderitem_set.all()
-	else:
-		items	= []
-		order	= {'get_cart_quantity': 0, 'get_cart_total': 0}
+	account			= request.user
+	order, created	= Order.objects.get_or_create(account=account, complete=False)
+	items			= order.orderitem_set.all()
 	context	= {'items': items, 'order': order}
 	return render(request, 'store/cart.html', context)
 
 @login_required(login_url='/login/')
 def checkout(request):
-	if request.user.is_authenticated:
-		account			= request.user
-		order, created	= Order.objects.get_or_create(account=account, complete=False)
-		items			= order.orderitem_set.all()
-	else:
-		items	= []
-		order	= {'get_cart_quantity': 0, 'get_cart_total': 0}
+	account			= request.user
+	order, created	= Order.objects.get_or_create(account=account, complete=False)
+	items			= order.orderitem_set.all()
 	context	= {'items': items, 'order': order}
 	return render(request, 'store/checkout.html', context)
 

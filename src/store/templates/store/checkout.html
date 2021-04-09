@@ -75,9 +75,7 @@
 			document.getElementById('empty-cart').classList.remove('hidden');
 		}
 
-		if (user != 'AnonymousUser') {
-			document.getElementById('user-info').innerHTML='';
-		}
+		document.getElementById('user-info').innerHTML='';
 
 		var form = document.getElementById('form');
 
@@ -93,21 +91,9 @@
 		});
 
 		function submitFormData() {
-			console.log('data submitted...');
-			userFormData = {
-				'name': null,
-				'email': null,
-				'total': total,
-			}
 	
 			var total = '{{order.get_cart_total}}';
 			
-			// if (user == 'AnonymousUser') {
-			// 	userFormData.name = form.name.value
-			// 	userFormData.email = form.email.value
-			// 	userFormData.total = total
-			// }
-	
 			var shippingInfo = {
 				'address': form.address.value,
 				'city': form.city.value,
@@ -122,7 +108,7 @@
 					'Content-Type': 'application/json',
 					'X-CSRFToken': csrftoken,
 				},
-				body:JSON.stringify({'form':userFormData,'shipping':shippingInfo})
+				body:JSON.stringify({'shipping':shippingInfo})
 			})
 			.then((response) => response.json())
 			.then((data) => {

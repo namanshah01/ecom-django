@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
-# from .settings import AUTH_USER_MODEL
 from ecomweb.settings import AUTH_USER_MODEL
 
 # Create your models here.

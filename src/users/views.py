@@ -1,10 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-
 from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
-
-
 
 def registration_view(request):
 	context = {}
@@ -57,7 +54,6 @@ def login_view(request):
 
 	context['login_form'] = form
 
-	# print(form)
 	return render(request, "users/login.html", context)
 
 @login_required(login_url='/login/')
@@ -92,20 +88,3 @@ def account_view(request):
 
 def must_authenticate_view(request):
 	return render(request, 'users/must_authenticate.html', {})
-
-# @login_required
-# def profile_view(request):
-#     if request.method == 'POST':
-#         form = UserUpdateForm(request.POST, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, f'Account info updated!')
-#             return redirect('profile')
-#     else:
-#         form = UserUpdateForm(instance=request.user)
-
-#     context = {
-#         'form': form,
-#     }
-
-#     return render(request, 'users/profile.html', context)
