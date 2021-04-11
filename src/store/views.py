@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
 from .models import *
 from django.http import JsonResponse
 import json
@@ -6,6 +8,8 @@ import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 # Create your views here.
 
 @login_required(login_url='/login/')
@@ -112,3 +116,34 @@ def get_queryset(query=None):
 			products = Product.objects.filter(Q(name__icontains=q)).distinct()
 			# posts = Product.objects.filter(Q(name__icontains=q) | Q(label__icontains=q)).distinct()
 	return products
+
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_admin
+
+
+class ProductDetailView(DetailView):
+	model = Product
+	template_name = 'store/product_detail.html'
+	context_object_name = 'product'
+
+class ProductCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
+	model = Product
+	fields = '__all__'
+	template_name = 'store/product_create.html'
+
+	def get_success_url(self):
+		return reverse('product_detail', kwargs={'pk': self.object.pk})
+
+class ProductUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
+	model = Product
+	fields = '__all__'
+	template_name = 'store/product_update.html'
+
+	def get_success_url(self):
+		return reverse('product_detail', kwargs={'pk': self.object.pk})
+
+class ProductDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
+	model = Product
+	success_url = '/'
+	template_name = 'store/product_delete.html'

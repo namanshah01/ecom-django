@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 from ecomweb.settings import AUTH_USER_MODEL
+from django.urls import reverse
 
 # Create your models here.
 
@@ -29,6 +30,9 @@ class Product(models.Model):
 			return 'bestseller'
 		else:
 			return 'new'
+	
+	def get_absolute_url(self):
+		return reverse('product_detail', kwargs={'pk': self.pk})
 	
 	def save(self, *args, **kwargs):
 		super().save(*args, **kwargs)

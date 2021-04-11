@@ -1,0 +1,14 @@
+{% extends 'store/home.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<form method="post">
+	{% csrf_token %}
+	<h3 style="text-align: center;">Are you sure you want to delete: <strong>{{product.name}}</strong></h3>
+	<div style="display: flex; align-items: center; justify-content: center;">
+		<input class="btn btn-danger" type="submit" value="Confirm">
+	</div>
+</form>
+
+{% endblock content %}

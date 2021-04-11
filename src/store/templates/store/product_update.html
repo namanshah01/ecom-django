@@ -1,0 +1,48 @@
+{% extends 'store/home.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+	.form-signin input {
+		display: block;
+		width: 100%;
+		height: calc(1.5em + .75rem + 2px);
+		padding: .375rem .75rem;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #495057;
+		background-color: #fff;
+		background-clip: padding-box;
+		border: 1px solid #ced4da;
+		border-radius: .25rem;
+		transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		position: relative;
+		box-sizing: border-box;
+		height: auto;
+		padding: 10px;
+		font-size: 16px;
+	}
+</style>
+
+<form class="form-signin" enctype="multipart/form-data" method="post">
+	<h1 class="h3 mb-3 font-weight-normal">Update Product</h1>
+	{% csrf_token %}
+	{{form|crispy}}
+	
+	<!-- <input type="name" name="name" class="form-control" placeholder="Name" required autofocus>
+	<input type="number" name="price" class="form-control mt-2" placeholder="Price" required autofocus>
+	<label class="mb-0 mt-2">Set Label:</label>
+    <select name="label" class="form-control" placeholder="Label" id="id_label">
+		<option disabled selected value>Product Label</option>
+		<option value="n">None</option>
+		<option value="primary">Bestseller</option>
+		<option value="danger">New</option>
+	</select>
+	<label class="mb-0 mt-2">Add Image:</label>
+	{{form.image}} -->
+    <input type="submit" class="form-control btn btn-primary mt-2" value="Save">
+</form>
+
+{% endblock content %}

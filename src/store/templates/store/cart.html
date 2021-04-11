@@ -33,6 +33,7 @@
 					<div style="flex:1"><strong>Total</strong></div>
 				</div>
 				
+				{% if items %}
 				<p id="empty-cart" class="hidden" style="text-align: center;">Cart Empty!</p>
 				{% for item in items %}
 				<div class="cart-row">
@@ -49,6 +50,11 @@
 					<div style="flex:1"><p>&#8377;{{item.get_total}}</p></div>
 				</div>
 				{% endfor %}
+				{% else %}
+				<div class="cart-row">
+				<h6 style="text_align: center">No products to sell!</h6>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>

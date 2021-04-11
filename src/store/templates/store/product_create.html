@@ -1,0 +1,24 @@
+{% extends 'store/home.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<form class="form-signin" enctype="multipart/form-data" method="post">
+	{% csrf_token %}
+	<h1 class="h3 mb-3 font-weight-normal">Add New Product</h1>
+	<input type="name" name="name" class="form-control" placeholder="Name" required autofocus>
+	<input type="number" name="price" class="form-control mt-2" placeholder="Price" required autofocus>
+	<label class="mb-0 mt-2">Set Label:</label>
+    <select name="label" class="form-control" placeholder="Label" id="id_label">
+		<option disabled selected value>Product Label</option>
+		<option value="n">None</option>
+		<option value="primary">Bestseller</option>
+		<option value="danger">New</option>
+	</select>
+	<label class="mb-0 mt-2">Add Image:</label>
+	{{form.image}}
+	<!-- <input type="image" name="image" required autofocus> -->
+    <input type="submit" class="form-control btn btn-primary mt-2" value="Save">
+</form>
+
+{% endblock content %}

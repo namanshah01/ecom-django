@@ -19,6 +19,7 @@
 				<hr>
 
 				<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+				<a class="btn btn-outline-success add-btn" href="{% url 'product_detail'  product.id %}">View</a>
 				<h4 style="display: inline-block; float: right"><strong>&#8377;{{product.price|floatformat:2}}</strong></h4>
 
 			</div>
@@ -27,24 +28,21 @@
 	</div>
 
 		<div class="page_btn mt-5" style="margin: auto;">
-			<div style="width: 22%;
-			height: auto;
-			margin: 0 auto;
-			position: relative;">
+			<div style="display: flex; align-items: center; justify-content: center;"">
 				{% if prod_list.has_previous %}
-					<a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+					<a class="btn btn-outline-info mb-4 mr-1" href="?page=1">First</a>
 				{% endif %}
 
 				{% for num in prod_list.paginator.page_range %}
 					{% if prod_list.number == num %}
-						<a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+						<a class="btn btn-info mb-4 ml-1 mr-1" href="?page={{ num }}">{{ num }}</a>
 					{% elif num > prod_list.number|add:'-3' and num < prod_list.number|add:'3' %}
-						<a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+						<a class="btn btn-outline-info mb-4 ml-1 mr-1" href="?page={{ num }}">{{ num }}</a>
 					{% endif %}
 				{% endfor %}
 
 				{% if prod_list.has_next %}
-					<a class="btn btn-outline-info mb-4" href="?page={{ prod_list.paginator.num_pages }}">Last</a>
+					<a class="btn btn-outline-info mb-4 ml-1" href="?page={{ prod_list.paginator.num_pages }}">Last</a>
 				{% endif %}
 			</div>
 		</div>
