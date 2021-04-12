@@ -8,7 +8,11 @@ Ecommerce website made using django
 - Login / Register / Update Password via mail
 - Product add / update / delete permission only to superuser
 - Add / Remove from cart functionality through AJAX
-- Checkout option (razor pay yet to be integrated)
+- Checkout option
+
+## Features to be added
+
+- Payment method, Razorpay
 
 ## Setup (for Unix / Linux systems)
 
